@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chúc mừng 20/10</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<main class="scene" id="scene">
+  <div class="sky"></div>
+  <div class="sun"></div>
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="cloud c3"></div>
+  <div class="hill far"></div>
+  <div class="hill mid"></div>
+  <div class="ground"></div>
+  <div class="grass back" id="grass-back"></div>
+  <div id="garden"></div>
+  <div class="grass front" id="grass-front"></div>
+  <div id="petals"></div>
+  <div class="bfly b1"><span class="wing l"></span><span class="wing r"></span></div>
+  <div class="bfly b2"><span class="wing l"></span><span class="wing r"></span></div>
+  <p class="caption" id="hint">Chạm vào bông hoa nhé 🌸</p>
+  <p class="caption" id="title">Từ một bông hoa, cả khu vườn đang thức giấc</p>
+</main>
+
+<div class="controls" id="controls">
+  <button class="btn ghost" id="btn-read">Đọc lại thiệp</button>
+  <button class="btn" id="btn-again">Cho hoa nở lại</button>
+</div>
+
+<section class="overlay" id="card">
+  <article class="paper">
+    <p class="to">Gửi bạn thương mến,</p>
+    <p class="sub">Mong những điều đẹp đẽ luôn nở bên bạn.</p>
+    <div class="orn">✿ ❀ ✿</div>
+    <p class="wish">
+      Nhân ngày Phụ nữ Việt Nam 20/10, chúc bạn luôn rạng rỡ như đóa hoa đang độ nở rộ,
+      bình yên giữa những bộn bề và được yêu thương thật nhiều.
+      Mong mỗi sớm mai thức dậy, lòng bạn đều nhẹ nhàng, vui vẻ và đủ đầy.
+    </p>
+    <p class="sign">
+      Gửi bạn thật nhiều thương mến
+      <svg class="heart" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </p>
+  </article>
+  <button class="btn" id="btn-view">Ngắm vườn hoa</button>
+</section>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
