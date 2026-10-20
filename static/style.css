@@ -1,0 +1,327 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  background: #bfe6ff;
+}
+
+/* ---------- CẢNH NỀN ---------- */
+.scene { position: fixed; inset: 0; overflow: hidden; }
+.scene > * { position: absolute; }
+
+.sky { inset: 0; z-index: 0; background: linear-gradient(#a9dcff 0%, #d6f0ff 45%, #fff1de 62%); }
+
+.sun {
+  top: 7%; right: 9%;
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  z-index: 1;
+  background: radial-gradient(circle, #fffbd0, #ffe066);
+  box-shadow: 0 0 60px 30px rgba(255, 230, 120, 0.55);
+}
+
+.cloud {
+  width: 100px; height: 34px;
+  z-index: 1;
+  background: #fff;
+  border-radius: 50px;
+  opacity: 0.85;
+  animation: cloudMove linear infinite;
+}
+.cloud::before, .cloud::after { content: ""; position: absolute; background: #fff; border-radius: 50%; }
+.cloud::before { width: 44px; height: 44px; top: -20px; left: 12px; }
+.cloud::after { width: 56px; height: 56px; top: -28px; left: 44px; }
+.c1 { top: 9%;  left: -150px; animation-duration: 55s; }
+.c2 { top: 17%; left: -250px; animation-duration: 75s; animation-delay: -20s; }
+.c3 { top: 4%;  left: -350px; animation-duration: 90s; animation-delay: -45s; }
+
+@keyframes cloudMove { to { transform: translateX(150vw); } }
+
+.hill { left: -20%; width: 140%; border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+.hill.far { bottom: 22%; height: 30%; z-index: 2; background: linear-gradient(#93d49c, #72c47f); }
+.hill.mid { bottom: 12%; height: 30%; z-index: 3; background: linear-gradient(#63bd72, #4aa75c); }
+.ground { left: 0; right: 0; bottom: 0; height: 30%; z-index: 4; background: linear-gradient(#45a257, #2f8545); }
+
+/* ---------- CỎ ---------- */
+.grass { left: 0; right: 0; bottom: 0; height: 0; pointer-events: none; }
+.grass.back { z-index: 5; }
+.grass.front { z-index: 7; }
+.grass i {
+  position: absolute;
+  bottom: 0;
+  width: calc(var(--bw) * 1px);
+  height: calc(var(--bh) * 1px);
+  background: linear-gradient(to top, #2b7f43, #7fdc86);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  transform-origin: 50% 100%;
+  animation: blade var(--d) ease-in-out var(--dl) infinite;
+}
+@keyframes blade {
+  0%, 100% { transform: rotate(-7deg); }
+  50% { transform: rotate(8deg); }
+}
+
+/* ---------- VƯỜN HOA ---------- */
+#garden { inset: 0; z-index: 6; }
+
+.plant {
+  position: absolute;
+  left: var(--x);
+  bottom: var(--b);
+  width: var(--w);
+  height: var(--h);
+  margin-left: calc(var(--w) / -2);
+  z-index: var(--z);
+  transform-origin: 50% 100%;
+  transform: rotate(var(--t));
+  pointer-events: none;
+}
+
+.sway {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 100%;
+  animation: sway var(--d) ease-in-out var(--dl) infinite;
+}
+
+.stem {
+  position: absolute;
+  left: 50%; bottom: 0;
+  width: calc(var(--s) * 4.5px);
+  height: 100%;
+  margin-left: calc(var(--s) * -2.25px);
+  border-radius: 6px;
+  background: linear-gradient(90deg, #2c8a4b, #6fd28c 50%, #2c8a4b);
+  transform: scaleY(0);
+  transform-origin: 50% 100%;
+}
+
+.leaf {
+  position: absolute;
+  left: 50%;
+  bottom: var(--p);
+  width: calc(var(--s) * 34px);
+  height: calc(var(--s) * 15px);
+  background: linear-gradient(135deg, #8be59d, #2f9e57);
+  border-radius: 100% 0 100% 0;
+  transform-origin: 0 100%;
+  transform: rotate(calc(var(--f) * -8deg)) scaleX(var(--f));
+}
+
+.bloom {
+  position: absolute;
+  left: 50%; top: 0;
+  width: var(--w);
+  height: var(--w);
+  margin: calc(var(--w) / -2) 0 0 calc(var(--w) / -2);
+}
+.pop { width: 100%; height: 100%; opacity: 0; transform: scale(0); }
+.nod { width: 100%; height: 100%; transform-origin: 50% 70%; animation: nod 5s ease-in-out infinite; animation-delay: var(--dl); }
+.nod svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+.plant.on .stem { animation: grow 1.3s cubic-bezier(0.2, 0.8, 0.25, 1) var(--gd) forwards; }
+.plant.on .pop { animation: open 1.5s cubic-bezier(0.2, 1.2, 0.35, 1) calc(var(--gd) + 0.9s) forwards; }
+.plant.is-bud.on .pop { animation-name: budIn; animation-duration: 1s; }
+
+@keyframes grow { to { transform: scaleY(1); } }
+@keyframes open {
+  0% { transform: scale(0) rotate(-70deg); opacity: 0; }
+  55% { transform: scale(1.15) rotate(8deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes budIn {
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(calc(var(--a) * -0.4)); }
+  50% { transform: rotate(var(--a)); }
+}
+@keyframes nod {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(4deg); }
+}
+
+/* bông hoa đầu tiên */
+.hero .bloom { pointer-events: none; }
+.hero.ready .bloom { pointer-events: auto; cursor: pointer; }
+.hero.ready .bloom::after {
+  content: "";
+  position: absolute;
+  inset: -4%;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  animation: ping 2s ease-out infinite;
+}
+.scene.awake .hero .bloom { pointer-events: none; cursor: default; }
+.scene.awake .hero .bloom::after { display: none; }
+
+@keyframes ping {
+  0% { transform: scale(0.75); opacity: 0.9; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+/* ---------- CÁNH HOA BAY & BƯỚM ---------- */
+#petals { inset: 0; z-index: 8; overflow: hidden; pointer-events: none; }
+
+.fly {
+  position: absolute;
+  left: 0; top: 0;
+  display: none;
+  width: var(--sz);
+  height: calc(var(--sz) * 1.4);
+  background: linear-gradient(135deg, #ffe0eb, #ff8fb3);
+  border-radius: 80% 0 80% 0;
+  opacity: 0.85;
+  animation: petalMove var(--du) linear var(--de) infinite;
+}
+.scene.awake .fly { display: block; }
+
+@keyframes petalMove {
+  from { transform: translate(-6vw, var(--y)) rotate(0deg); }
+  50% { transform: translate(50vw, calc(var(--y) + 22vh)) rotate(360deg); }
+  to { transform: translate(106vw, calc(var(--y) + 44vh)) rotate(720deg); }
+}
+
+.bfly { left: 0; top: 0; z-index: 8; width: 26px; height: 20px; display: none; pointer-events: none; }
+.scene.awake .bfly { display: block; }
+.b1 { animation: flutter1 18s ease-in-out infinite; }
+.b2 { animation: flutter2 23s ease-in-out -7s infinite; }
+
+.wing {
+  position: absolute;
+  top: 0;
+  width: 13px; height: 20px;
+  background: radial-gradient(circle at 30% 30%, #fff, #ffb347 60%, #ff7a3d);
+  animation: flap 0.22s ease-in-out infinite alternate;
+}
+.wing.l { left: 0; border-radius: 30% 70% 40% 60%; transform-origin: 100% 50%; }
+.wing.r { right: 0; border-radius: 70% 30% 60% 40%; transform-origin: 0 50%; }
+.b2 .wing { background: radial-gradient(circle at 30% 30%, #fff, #8ec5ff 60%, #5a8cf2); }
+
+@keyframes flap { from { transform: scaleX(1); } to { transform: scaleX(0.25); } }
+@keyframes flutter1 {
+  0%, 100% { transform: translate(8vw, 58vh); }
+  25% { transform: translate(35vw, 42vh) rotate(8deg); }
+  50% { transform: translate(62vw, 56vh); }
+  75% { transform: translate(82vw, 36vh) rotate(-8deg); }
+}
+@keyframes flutter2 {
+  0%, 100% { transform: translate(88vw, 50vh); }
+  30% { transform: translate(60vw, 38vh) rotate(-10deg); }
+  60% { transform: translate(28vw, 52vh); }
+  80% { transform: translate(12vw, 40vh) rotate(8deg); }
+}
+
+/* ---------- DÒNG CHỮ ---------- */
+.caption {
+  left: 50%; top: 11%;
+  z-index: 20;
+  width: min(92vw, 720px);
+  text-align: center;
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  color: #8a2b52;
+  text-shadow: 0 2px 14px rgba(255, 255, 255, 0.9);
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+}
+.caption.show { opacity: 1; }
+#hint { font-size: clamp(1rem, 2.4vw, 1.3rem); }
+#title { font-size: clamp(1.5rem, 4.6vw, 2.6rem); }
+
+/* ---------- NÚT ---------- */
+.btn {
+  padding: 13px 26px;
+  border: 0;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 1rem;
+  white-space: nowrap;
+  color: #fff;
+  background: linear-gradient(135deg, #ff7aa8, #ff4f86);
+  box-shadow: 0 8px 20px rgba(255, 79, 134, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.btn:hover { transform: translateY(-3px); }
+.btn.ghost { color: #c2336a; background: rgba(255, 255, 255, 0.9); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); }
+
+.controls {
+  position: fixed;
+  left: 50%; bottom: 5%;
+  z-index: 30;
+  display: flex;
+  gap: 12px;
+  opacity: 0;
+  transform: translate(-50%, 20px);
+  pointer-events: none;
+  transition: opacity 0.6s, transform 0.6s;
+}
+.controls.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+
+/* ---------- THIỆP ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 20px;
+  background: rgba(255, 236, 244, 0.45);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+.overlay.show { opacity: 1; pointer-events: auto; }
+
+.paper {
+  position: relative;
+  width: min(92vw, 460px);
+  padding: 36px 32px 30px;
+  text-align: center;
+  font-family: "Playfair Display", Georgia, serif;
+  color: #5b2a3d;
+  background: linear-gradient(150deg, #fffdf8, #fff1f5);
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(160, 40, 90, 0.28);
+  outline: 1px dashed rgba(214, 90, 130, 0.4);
+  outline-offset: -10px;
+  transform: translateY(30px) scale(0.96);
+  transition: transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+}
+.overlay.show .paper { transform: none; }
+
+.to { font-size: 1.9rem; font-style: italic; color: #d6336c; }
+.sub { margin-top: 8px; font-size: 1.05rem; font-style: italic; }
+.orn { margin: 14px 0; letter-spacing: 8px; color: #ff9fbd; }
+.wish { font-size: 1.02rem; line-height: 1.85; }
+.sign { margin-top: 20px; font-size: 1.1rem; font-style: italic; color: #c2336a; }
+
+.heart {
+  width: 22px; height: 22px;
+  margin-left: 6px;
+  vertical-align: -4px;
+  fill: #ff4d79;
+  animation: beat 1.2s ease-in-out infinite;
+}
+@keyframes beat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
+
+@media (max-height: 640px) {
+  .paper { padding: 24px 22px 20px; }
+  .to { font-size: 1.5rem; }
+  .wish { line-height: 1.6; }
+}
